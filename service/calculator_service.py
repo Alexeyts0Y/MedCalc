@@ -1,4 +1,5 @@
 from schema.request.bmi_request_schema import BMIRequestSchema
+from schema.request.smoking_index_request_schema import SmokingIndexRequestSchema
 from schema.response.response_schema import ResponseSchema
 
 
@@ -43,3 +44,29 @@ class CalculatorService:
                        терапевтические и хирургические методы."
         
         return ResponseSchema(result=bmi, conclusion=conclusion, recommendation=message)
+    
+    @staticmethod
+    def calclulate_smoking_index(data: SmokingIndexRequestSchema) -> ResponseSchema:
+        SI: float = data.cigarette_count * data.years / 20
+        conclusion: str = ""
+        message: str = ""
+
+        if SI < 10:
+            conclusion = "Фактор риска, но риск развития ХОБЛ (хронической обструктивной болезни лёгких) ниже."
+            message = "	Это значимый фактор риска. Настоятельно рекомендуется отказаться от курения. \
+                        Сейчас — лучшее время, чтобы остановить прогрессирование повреждений и значительно \
+                        снизить риски для здоровья в будущем."
+        elif SI >= 10:
+            conclusion = "Пороговое значение. Достоверный и значимый фактор риска развития ХОБЛ, рака лёгких и сердечно-сосудистых заболеваний."
+            message = "	Необходима консультация врача (пульмонолога, терапевта). Риск развития ХОБЛ, рака \
+                        лёгких и сердечно-сосудистых заболеваний высок. Рекомендуется пройти обследование \
+                        (например, спирометрию) и обсудить с врачом стратегию отказа от курения и \
+                        дальнейшего наблюдения"
+        else:
+            conclusion = "Высокий риск. Часто сопряжён с видимыми изменениями на КТ лёгких и выраженными симптомами."
+            message = "Требуется срочное обращение к врачу для углубленного обследования. \
+                       Вероятны уже имеющиеся изменения в лёгких. Крайне важно полностью \
+                       отказаться от курения и пройти назначенные исследования (КТ органов грудной клетки, \
+                       оценку функции внешнего дыхания) для определения тактики лечения."
+        
+        return ResponseSchema(result=SI, conclusion=conclusion, recommendation=message)
