@@ -1,11 +1,10 @@
 from fastapi import FastAPI
+from APIRouter import api_router
 import uvicorn
 
 app = FastAPI()
 
-@app.get("/")
-def hello():
-    return {"message": "Hello, World!"}
+app.include_router(api_router)
 
 def main():
     uvicorn.run("main:app", reload=True)
