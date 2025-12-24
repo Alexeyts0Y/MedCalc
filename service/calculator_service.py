@@ -1,8 +1,8 @@
 from schema.request.bmi_request_schema import BMIRequestSchema
+from schema.request.perfect_weight_request_schema import PerfectWeightRequestSchema
 from schema.request.smoking_index_request_schema import SmokingIndexRequestSchema
 from schema.request.tdee_request_schema import TDEERequestSchema
 from schema.response.response_schema import ResponseSchema
-
 
 class CalculatorService:
     
@@ -96,7 +96,19 @@ class CalculatorService:
         else:
             TDEE = BMR * 1.9
         
-        conclusion = "Это оптимальное кол-во ккал/день, которые \
+        conclusion = "Это оптимальное кол-во ккал в день, которые \
                        рекомендуется употреблять с учетом вашего образа жизни"
         
         return ResponseSchema(result=TDEE, conclusion=conclusion)
+    
+    @staticmethod
+    def calculate_perfect_weight(data: PerfectWeightRequestSchema) -> ResponseSchema:
+        perfect_weight: float = 0
+        if data.gender == "male":
+            perfect_weight = 50 + 0.91 * (data.height - 152.4)
+        else:
+            perfect_weight = 45.5 + 0.91 * (data.height - 152.4)
+        
+        conclusion: str = "Это оптимальный вес для вашего роста"
+
+        return ResponseSchema(result=perfect_weight, conclusion=conclusion)
