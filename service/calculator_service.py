@@ -1,5 +1,6 @@
 from schema.request.bmi_request_schema import BMIRequestSchema
 from schema.request.smoking_index_request_schema import SmokingIndexRequestSchema
+from schema.request.tdee_request_schema import TDEERequestSchema
 from schema.response.response_schema import ResponseSchema
 
 
@@ -70,3 +71,32 @@ class CalculatorService:
                        оценку функции внешнего дыхания) для определения тактики лечения."
         
         return ResponseSchema(result=SI, conclusion=conclusion, recommendation=message)
+    
+    @staticmethod
+    def calculate_tdee(data: TDEERequestSchema) -> ResponseSchema:
+        BMR: float = 0
+        TDEE: float = 0
+        conclusion: str = ""
+
+        if data.gender == "male":
+            BMR = (10 * data.weight) + (6.25 * data.height) - (5 * data.age) + 5
+        else:
+            BMR = (10 * data.weight) + (6.25 * data.height) - (5 * data.age) - 161
+
+        lvl: str = data.activity_level
+
+        if lvl == "minimum":
+            TDEE = BMR * 1.2
+        elif lvl == "low":
+            TDEE = BMR * 1.375
+        elif lvl == "middle":
+            TDEE = BMR * 1.55
+        elif lvl == "high":
+            TDEE = BMR * 1.725
+        else:
+            TDEE = BMR * 1.9
+        
+        conclusion = "Это оптимальное кол-во ккал/день, которые \
+                       рекомендуется употреблять с учетом вашего образа жизни"
+        
+        return ResponseSchema(result=TDEE, conclusion=conclusion)
