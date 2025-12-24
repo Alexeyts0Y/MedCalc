@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from schema.request.bmi_request_schema import BMIRequestSchema
 from schema.request.smoking_index_request_schema import SmokingIndexRequestSchema
+from schema.request.tdee_request_schema import TDEERequestSchema
 from schema.response.response_schema import ResponseSchema
 from service.calculator_service import CalculatorService
 
@@ -15,3 +16,7 @@ async def get_bmi(data: BMIRequestSchema) -> ResponseSchema:
 @calculator_router.post("/smoking_index")
 async def get_smoking_index(data: SmokingIndexRequestSchema) -> ResponseSchema:
     return CalculatorService.calclulate_smoking_index(data=data)
+
+@calculator_router.post("/tdee")
+async def get_tdee(data: TDEERequestSchema) -> ResponseSchema:
+    return CalculatorService.calculate_tdee
