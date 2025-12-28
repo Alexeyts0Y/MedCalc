@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Логи
+*.log
+logs/
+
+# Операционные системы
+.DS_Store
+Thumbs.db
+
+# Фронтенд (если есть)
+node_modules/
+dist/
+build/
+*.tgz
+
+# Большие файлы/папки
+data/
+datasets/
+models/
+*.zip
+*.tar.gz
+*.jpg
+*.png
+
+# Backend специфичные
+*.db
+*.sqlite3
+instance/
+
+# Ваш конкретный проект
+backend/.venv/  # если у вас папка backend
+backend/__pycache__/
+
+node_modules
