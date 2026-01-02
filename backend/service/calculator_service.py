@@ -1,14 +1,17 @@
+from models.bmi_record import BMIRecord
 from schema.request.bmi_request_schema import BMIRequestSchema
 from schema.request.perfect_weight_request_schema import PerfectWeightRequestSchema
 from schema.request.smoking_index_request_schema import SmokingIndexRequestSchema
 from schema.request.tdee_request_schema import TDEERequestSchema
 from schema.response.response_schema import ResponseSchema
-
+from sqlalchemy.orm import Session
 class CalculatorService:
     
     @staticmethod
-    def calculate_bmi(data: BMIRequestSchema) -> ResponseSchema:
+    def calculate_bmi(data: BMIRequestSchema, db: Session) -> ResponseSchema:
         bmi: float =  data.weight / (data.height * 0.01) ** 2
+        bmi = round(bmi, 2)
+
         message: str = ""
         conclusion: str = ""
         
@@ -43,6 +46,19 @@ class CalculatorService:
             message = "Требуется обязательная консультация с врачом (бариатром, эндокринологом). \
                        Лечение часто требует комплексного медицинского подхода, включая возможные \
                        терапевтические и хирургические методы."
+        
+        try:
+            new_record = BMIRecord(
+                weight=data.weight,
+                height=data.height,
+                bmi_value=bmi,
+                conclusion=conclusion
+            )
+            db.add(new_record)
+            db.commit()
+            db.refresh(new_record)
+        except Exception as e:
+            print(f"Ошибка при сохранении в БД: {e}")
         
         return ResponseSchema(result=bmi, conclusion=conclusion, recommendation=message)
     

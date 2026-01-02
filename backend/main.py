@@ -3,6 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from APIRouter import api_router
 import uvicorn
 
+from db.database import engine, Base
+from models.bmi_record import BMIRecord
+
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
 
 app.include_router(api_router)
@@ -10,9 +15,9 @@ app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
+    allow_credentials=True
 )
 
 def main():
