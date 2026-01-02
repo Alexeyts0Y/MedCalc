@@ -19,6 +19,8 @@ services:
       context: ./backend
     networks:
       - dev
+    volumes:
+      - ./backend/medical.db:/app/medical.db
   
   frontend:
     build:
