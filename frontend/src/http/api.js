@@ -31,6 +31,15 @@ export const bmiService = {
             console.error("Error calculating BMI", error);
             throw error;
         }
+    },
+    getStatistics: async () => {
+        try {
+            // Запрашиваем данные с эндпоинта, который мы создали ранее
+            return await api.get("/stats");
+        } catch (error) {
+            console.error("Error fetching statistics", error);
+            throw error;
+        }
     }
 }
 
