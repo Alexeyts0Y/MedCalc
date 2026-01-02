@@ -1,0 +1,137 @@
+.stats-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.stats-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.stats-header h1 { color: #2c3e50; margin-bottom: 0.5rem; }
+.stats-header p { color: #7f8c8d; }
+
+/* Сетка для карточек с большими цифрами */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-value { font-size: 3.5rem; font-weight: bold; margin-bottom: 0.5rem; }
+.stat-label { font-size: 1.1rem; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; }
+
+.stat-card.primary .stat-value { color: #3498db; }
+.stat-card.secondary .stat-value { color: #8e44ad; }
+
+/* График (Bar Chart) */
+.chart-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.chart-section h2 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.chart-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 50px; /* Метка, Полоска, Цифра */
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.chart-label {
+    text-align: right;
+    font-weight: 500;
+    color: #34495e;
+    font-size: 0.95rem;
+}
+
+.chart-bar-container {
+    background-color: #f0f2f5;
+    border-radius: 20px;
+    height: 24px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.chart-bar {
+    height: 100%;
+    border-radius: 20px;
+    transition: width 1s ease-out;
+    position: relative;
+    min-width: 5px; /* Чтобы даже при 0 был виден край */
+}
+
+/* Всплывающая подсказка при наведении на полоску */
+.chart-bar:hover .bar-tooltip {
+    opacity: 1;
+}
+
+.chart-count {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.loading-state, .error-state {
+    text-align: center;
+    padding: 4rem;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+}
+.error-state { color: #e74c3c; }
+
+.btn-refresh {
+    display: block;
+    margin: 2rem auto 0;
+    padding: 0.75rem 2rem;
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+.btn-refresh:hover { background-color: #7f8c8d; }
+
+/* Адаптив для мобильных */
+@media (max-width: 600px) {
+    .chart-row {
+        grid-template-columns: 1fr; /* В столбик */
+        grid-template-rows: auto auto auto;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+    .chart-label { text-align: left; }
+}
