@@ -2,14 +2,37 @@ import React, { useState } from 'react';
 import { bmiService } from '../http/api';
 import '../styles/BMICalculator.css';
 
+const CITIES = [
+  '',
+  'Москва',
+  'Санкт-Петербург',
+  'Новосибирск',
+  'Екатеринбург',
+  'Казань',
+  'Нижний Новгород',
+  'Челябинск',
+  'Самара',
+  'Омск',
+  'Ростов-на-Дону',
+  'Уфа',
+  'Красноярск',
+  'Воронеж',
+  'Пермь',
+  'Волгоград',
+  'Другой город'
+];
+
 const BMICalculator = () => {
   const [formData, setFormData] = useState({
     weight: '',
-    height: ''
+    height: '',
+    city: ''
   });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showCityInput, setShowCityInput] = useState(false);
+  const [customCity, setCustomCity] = useState('');
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -17,11 +40,22 @@ const BMICalculator = () => {
       ...prev,
       [id]: value
     }));
+    
+    if (id === 'city' && value === 'Другой город') {
+      setShowCityInput(true);
+    } else if (id === 'city') {
+      setShowCityInput(false);
+      setCustomCity('');
+    }
+  };
+
+  const handleCustomCityChange = (e) => {
+    setCustomCity(e.target.value);
   };
 
   const validateForm = () => {
     if (!formData.weight || !formData.height) {
-      setError('Пожалуйста, заполните все поля');
+      setError('Пожалуйста, заполните обязательные поля');
       return false;
     }
 
@@ -38,7 +72,9 @@ const BMICalculator = () => {
       return false;
     }
 
-    return { weight, height };
+    const city = formData.city === 'Другой город' && customCity ? customCity : formData.city;
+    
+    return { weight, height, city: city || null };
   };
 
   const handleSubmit = async (e) => {
@@ -49,12 +85,12 @@ const BMICalculator = () => {
     const validationResult = validateForm();
     if (!validationResult) return;
 
-    const { weight, height } = validationResult;
+    const { weight, height, city } = validationResult;
 
     setLoading(true);
 
     try {
-      const data = await bmiService.calculateBMI(weight, height);
+      const data = await bmiService.calculateBMI(weight, height, city);
       setResult(data);
     } catch (err) {
       setError(err.message || 'Произошла ошибка при расчете');
@@ -64,7 +100,9 @@ const BMICalculator = () => {
   };
 
   const handleReset = () => {
-    setFormData({ weight: '', height: '' });
+    setFormData({ weight: '', height: '', city: '' });
+    setCustomCity('');
+    setShowCityInput(false);
     setResult(null);
     setError('');
   };
@@ -84,7 +122,7 @@ const BMICalculator = () => {
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="weight">
-                  Вес (кг)
+                  Вес (кг) *
                 </label>
                 <input
                   type="number"
@@ -100,7 +138,7 @@ const BMICalculator = () => {
 
               <div className="form-group">
                 <label htmlFor="height">
-                  Рост (см)
+                  Рост (см) *
                 </label>
                 <input
                   type="number"
@@ -114,6 +152,43 @@ const BMICalculator = () => {
                 />
                 <div className="input-hint">Пример: 175</div>
               </div>
+
+              <div className="form-group">
+                <label htmlFor="city">
+                  Город проживания (необязательно)
+                </label>
+                <select
+                  id="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  className="city-select"
+                >
+                  {CITIES.map((city, index) => (
+                    <option key={index} value={city}>
+                      {city || 'Не указывать'}
+                    </option>
+                  ))}
+                </select>
+                <div className="input-hint">
+                  Если хотите поучаствовать в анонимном сборе статистики по городам, выберите ваш город
+                </div>
+              </div>
+
+              {showCityInput && (
+                <div className="form-group">
+                  <label htmlFor="customCity">
+                    Укажите ваш город
+                  </label>
+                  <input
+                    type="text"
+                    id="customCity"
+                    value={customCity}
+                    onChange={handleCustomCityChange}
+                    placeholder="Введите название вашего города"
+                    maxLength="100"
+                  />
+                </div>
+              )}
 
               {error && (
                 <div className="error-message">
@@ -138,6 +213,12 @@ const BMICalculator = () => {
                 </button>
               </div>
             </form>
+          </div>
+
+          <div className="info-card">
+            <h3>О сборе статистики</h3>
+            <p>Указание города помогает нам собирать анонимные статистические данные для исследований в области общественного здоровья. Все данные обезличены и используются только в агрегированном виде.</p>
+            <p>Вы можете посмотреть текущую статистику на <a href="/stats">странице статистики</a>.</p>
           </div>
         </div>
 
@@ -176,10 +257,18 @@ const BMICalculator = () => {
                     <span className="data-label">Рост:</span>
                     <span className="data-value">{formData.height} см</span>
                   </div>
-                  <div className="data-item">
-                    <span className="data-label">Формула:</span>
-                    <span className="data-value">вес / (рост/100)²</span>
-                  </div>
+                  {formData.city && formData.city !== 'Другой город' && (
+                    <div className="data-item">
+                      <span className="data-label">Город:</span>
+                      <span className="data-value">{formData.city}</span>
+                    </div>
+                  )}
+                  {customCity && (
+                    <div className="data-item">
+                      <span className="data-label">Город:</span>
+                      <span className="data-value">{customCity}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
