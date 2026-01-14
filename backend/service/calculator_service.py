@@ -52,7 +52,8 @@ class CalculatorService:
                 weight=data.weight,
                 height=data.height,
                 bmi_value=bmi,
-                conclusion=conclusion
+                conclusion=conclusion,
+                city=data.city
             )
             db.add(new_record)
             db.commit()

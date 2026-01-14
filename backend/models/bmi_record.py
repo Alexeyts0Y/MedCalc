@@ -11,4 +11,5 @@ class BMIRecord(Base):
     height = Column(Integer)
     bmi_value = Column(Float)
     conclusion = Column(String)
+    city = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)

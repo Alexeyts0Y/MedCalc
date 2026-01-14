@@ -1,137 +1,157 @@
-.stats-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    animation: fadeIn 0.5s ease-in;
+/* Добавляем новые стили для вкладок и статистики по городам */
+
+.stats-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 1rem;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #7f8c8d;
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  transition: all 0.3s;
 }
 
-.stats-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 2px solid #e0e0e0;
+.tab-btn:hover {
+  color: #3498db;
+  background-color: #f8f9fa;
 }
 
-.stats-header h1 { color: #2c3e50; margin-bottom: 0.5rem; }
-.stats-header p { color: #7f8c8d; }
-
-/* Сетка для карточек с большими цифрами */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
+.tab-btn.active {
+  color: #3498db;
+  border-bottom: 3px solid #3498db;
+  background-color: #f8f9fa;
 }
 
-.stat-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
+.city-stats-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.stat-card:hover {
-    transform: translateY(-5px);
+.city-stats-info {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
 }
 
-.stat-value { font-size: 3.5rem; font-weight: bold; margin-bottom: 0.5rem; }
-.stat-label { font-size: 1.1rem; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; }
-
-.stat-card.primary .stat-value { color: #3498db; }
-.stat-card.secondary .stat-value { color: #8e44ad; }
-
-/* График (Bar Chart) */
-.chart-section {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+.city-stats-info p {
+  margin: 0;
+  color: #2c3e50;
+  font-weight: 500;
 }
 
-.chart-section h2 {
-    color: #2c3e50;
-    margin-bottom: 2rem;
-    text-align: center;
+.city-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-.chart-row {
-    display: grid;
-    grid-template-columns: 200px 1fr 50px; /* Метка, Полоска, Цифра */
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+.city-stat-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.3s;
 }
 
-.chart-label {
-    text-align: right;
-    font-weight: 500;
-    color: #34495e;
-    font-size: 0.95rem;
+.city-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.chart-bar-container {
-    background-color: #f0f2f5;
-    border-radius: 20px;
-    height: 24px;
-    width: 100%;
-    overflow: hidden;
+.city-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #3498db;
 }
 
-.chart-bar {
-    height: 100%;
-    border-radius: 20px;
-    transition: width 1s ease-out;
-    position: relative;
-    min-width: 5px; /* Чтобы даже при 0 был виден край */
+.city-stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0;
 }
 
-/* Всплывающая подсказка при наведении на полоску */
-.chart-bar:hover .bar-tooltip {
-    opacity: 1;
+.city-stat-label {
+  color: #7f8c8d;
+  font-weight: 500;
 }
 
-.chart-count {
-    font-weight: bold;
-    color: #2c3e50;
+.city-stat-value {
+  color: #2c3e50;
+  font-weight: bold;
+  font-size: 1.1rem;
 }
 
-.loading-state, .error-state {
-    text-align: center;
-    padding: 4rem;
-    font-size: 1.2rem;
-    color: #7f8c8d;
+.city-distribution {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
 }
-.error-state { color: #e74c3c; }
+
+.city-distribution h4 {
+  color: #34495e;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.city-dist-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.city-category {
+  color: #7f8c8d;
+}
+
+.city-count {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.no-city-data {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: #7f8c8d;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.actions {
+  margin-top: 2rem;
+  text-align: center;
+}
 
 .btn-refresh {
-    display: block;
-    margin: 2rem auto 0;
-    padding: 0.75rem 2rem;
-    background-color: #95a5a6;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s;
+  padding: 0.75rem 2rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
 }
-.btn-refresh:hover { background-color: #7f8c8d; }
 
-/* Адаптив для мобильных */
-@media (max-width: 600px) {
-    .chart-row {
-        grid-template-columns: 1fr; /* В столбик */
-        grid-template-rows: auto auto auto;
-        gap: 0.5rem;
-        margin-bottom: 2rem;
-    }
-    .chart-label { text-align: left; }
+.btn-refresh:hover {
+  background-color: #2980b9;
 }

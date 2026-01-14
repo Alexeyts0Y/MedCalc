@@ -21,12 +21,13 @@ api.interceptors.response.use(
 )
 
 export const bmiService = {
-    calculateBMI: async (weight, height) => {
+    calculateBMI: async (weight, height, city = null) => {
         try {
-            return await api.post("/bmi", {
-                weight,
-                height
-            });
+            const requestData = { weight, height };
+            if (city !== null && city !== '') {
+                requestData.city = city;
+            }
+            return await api.post("/bmi", requestData);
         } catch (error) {
             console.error("Error calculating BMI", error);
             throw error;
@@ -34,7 +35,6 @@ export const bmiService = {
     },
     getStatistics: async () => {
         try {
-            // Запрашиваем данные с эндпоинта, который мы создали ранее
             return await api.get("/stats");
         } catch (error) {
             console.error("Error fetching statistics", error);
